@@ -1,3 +1,4 @@
+//LoginForm.jsx
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useState} from 'react';
@@ -19,7 +20,7 @@ function LoginForm(){
         console.log(response.data.message);
       })
       .catch((error) => {
-        setMessage('Error during registration: '+ error.response.data.message);
+        setMessage('Error during login: '+ error.response.data.message);
       })
       };
 

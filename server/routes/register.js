@@ -41,7 +41,7 @@ router.post('/', async function(req, res, next) {
       }else{
         try {
           await pool.query(query);
-          res.redirect('/');
+          console.log("success register");
         } catch (error) {
           console.error('Error registering user:', error);
           res.status(500).json({ message: 'Internal Server Error' });

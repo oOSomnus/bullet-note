@@ -3,7 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 function Register(){
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -17,6 +19,7 @@ function Register(){
         })
         .then((response) => {
           setMessage(response.data.message);
+          navigate('/');
         })
         .catch((error) => {
           setMessage('Error during registration: '+ error.response.data.message);
