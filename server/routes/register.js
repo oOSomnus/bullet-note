@@ -10,16 +10,8 @@ router.post('/', async function(req, res, next) {
   
     // Generate a salt
     const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-  
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Store the user information in the database
-    const query = {
-      text: 'INSERT INTO users (email, hashed_password, salt) VALUES($1, $2, $3)',
-      values: [email, hashedPassword, salt],
-    };
+
     
     // Function to check if email exists
     async function isEmailRegistered(email) {
@@ -40,8 +32,19 @@ router.post('/', async function(req, res, next) {
         res.status(500).json({ message: 'User already registered' });
       }else{
         try {
-          await pool.query(query);
-          console.log("success register");
+          bcrypt.genSalt(saltRounds, function(err, salt) {
+            bcrypt.hash(password, salt, function(err, hash) {
+              const query = {
+                text: 'INSERT INTO users (email, hashed_password) VALUES($1, $2)',
+                values: [email,hash],
+              };
+      
+              pool.query(query, (err)=>{
+                console.log(err);
+              })
+            });
+        });
+          res.json({message: "success register"});
         } catch (error) {
           console.error('Error registering user:', error);
           res.status(500).json({ message: 'Internal Server Error' });

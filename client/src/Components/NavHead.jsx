@@ -1,7 +1,23 @@
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 function NavHead(){
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+      axios.get('http://localhost:4000/login/check')
+      .then((response)=>{
+        console.log(response.data);
+        setIsAuthenticated(response.data.authenticated);
+        
+      })
+      .catch((error)=>{
+        console.error('Error checking authentication:', error);
+        setIsAuthenticated(false);
+      })
+    });
+    
     return(
         <Navbar expand='lg' className='bg-bodt-light'>
             <Container>
@@ -15,10 +31,17 @@ function NavHead(){
                 />{' '}
                 Bullet Note
                 </Navbar.Brand>
-                <div className='justify-content-end d-flex'>
-                <Nav.Link as={Link} to="/register" style={{ marginRight: '10px' }} >Register</Nav.Link>
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                </div>
+                
+                {isAuthenticated ?(
+                   <Nav.Link as={Link} to="/logout">Logout</Nav.Link>  )
+                :(
+                    <div className='justify-content-end d-flex'>
+                    <Nav.Link as={Link} to="/register" style={{ marginRight: '10px' }} >Register</Nav.Link>
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                    </div> 
+                )
+}
+                
             </Container>
         </Navbar>
     );

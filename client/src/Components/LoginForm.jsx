@@ -3,8 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm(){
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -13,14 +15,15 @@ function LoginForm(){
 
       axios
       .post('http://localhost:4000/login', {
-        email,
-        password,
+       email: email,
+       password: password,
       })
       .then((response) => {
-        console.log(response.data.message);
+        console.log(response);
+        navigate('/');
       })
       .catch((error) => {
-        setMessage('Error during login: '+ error.response.data.message);
+        setMessage('Error during login: '+ error.response.data.message||error);
       })
       };
 
