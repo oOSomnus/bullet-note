@@ -33,9 +33,10 @@ app.use(expressSession({
   }),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  cookie: { maxAge: 30 * 60 * 1000 }, // 30 days
+  cookie: { maxAge: 30 * 60 * 1000}, // 30 days
   // Insert express-session options here
-  saveUninitialized:false
+  saveUninitialized:false,
+
 }));
 passport.use('local', new LocalStrategy({usernameField: 'email', passwordField :'password'},( username, password, cb )=> {
   console.log("this is being executed");
