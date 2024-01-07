@@ -6,9 +6,9 @@ function NavHead(){
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-      axios.get('http://localhost:4000/login/check')
+      axios.get('http://localhost:4000/login/check',{withCredentials:true})
       .then((response)=>{
-        console.log(response.data);
+        console.log(response.data.authenticated);
         setIsAuthenticated(response.data.authenticated);
         
       })
@@ -16,7 +16,7 @@ function NavHead(){
         console.error('Error checking authentication:', error);
         setIsAuthenticated(false);
       })
-    });
+    },[]);
     
     return(
         <Navbar expand='lg' className='bg-bodt-light'>

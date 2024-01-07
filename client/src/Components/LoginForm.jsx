@@ -17,6 +17,8 @@ function LoginForm(){
       .post('http://localhost:4000/login', {
        email: email,
        password: password,
+      },{
+        withCredentials:true,
       })
       .then((response) => {
         console.log(response);

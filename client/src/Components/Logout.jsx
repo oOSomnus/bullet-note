@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 function Logout(){
     const navigate = useNavigate();
     useEffect(()=>{
-        axios.post('http://localhost:4000/logout')
-        .then(()=>{
+        axios.post('http://localhost:4000/logout',{},{withCredentials:true})
+        .then((response)=>{
+            console.log(response);
             navigate('/');
         })
         .catch((err)=>{

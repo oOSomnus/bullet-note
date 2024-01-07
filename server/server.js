@@ -18,7 +18,12 @@ const pgSession = require('connect-pg-simple')(expressSession);
 
 
 const app = express();
-app.use(cors());
+const corsOpt = {
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials:true,
+}
+
+app.use(cors(corsOpt));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +38,7 @@ app.use(expressSession({
   }),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  cookie: { maxAge: 30 * 60 * 1000}, // 30 days
+  cookie: { maxAge: 30 * 60 * 1000}, // 30 minutes
   // Insert express-session options here
   saveUninitialized:false,
 
