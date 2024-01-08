@@ -48,8 +48,7 @@ function Event(props) {
   };
 
   return (
-    <Container>
-      <Row>
+    <Row>
         <Col
           onMouseEnter={() => setButtonsVisibility(true)}
           onMouseLeave={() => setButtonsVisibility(false)}
@@ -94,8 +93,7 @@ function Event(props) {
             <span>{props.event}</span>
           )}
         </Col>
-      </Row>
-    </Container>
+  </Row>
   );
 }
 
