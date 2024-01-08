@@ -8,7 +8,6 @@ function NavHead(){
     useEffect(() => {
       axios.get('http://localhost:4000/login/check',{withCredentials:true})
       .then((response)=>{
-        console.log(response.data.authenticated);
         setIsAuthenticated(response.data.authenticated);
         
       })

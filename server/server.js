@@ -14,11 +14,18 @@ const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const changeRouter = require('./routes/change');
+const eventsRouter = require('./routes/events.js');
 const expressSession = require('express-session');
 const pgSession = require('connect-pg-simple')(expressSession);
 
 
 const app = express();
+/**
+ * Configuration options for CORS (Cross-Origin Resource Sharing).
+ * @type {Object}
+ * @property {Array<string>} origin - The allowed origins for CORS requests.
+ * @property {boolean} credentials - Indicates whether CORS requests should include credentials.
+ */
 const corsOpt = {
   origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials:true,
@@ -43,8 +50,11 @@ app.use(expressSession({
   // Insert express-session options here
   saveUninitialized:false,
 
-}));
-passport.use('local', new LocalStrategy({usernameField: 'email', passwordField :'password'},( username, password, cb )=> {
+}));  
+app.use(passport.authenticate('session'));
+
+
+passport.use(new LocalStrategy({usernameField: 'email', passwordField :'password'},( username, password, cb )=> {
   console.log("this is being executed");
   pool.query("SELECT * FROM users WHERE email = $1", [username], (err, result) => {
       if(err){
@@ -71,26 +81,26 @@ passport.use('local', new LocalStrategy({usernameField: 'email', passwordField :
       }
   })
 }));
+
+
 passport.serializeUser(function(user, done){
   console.log("serialize user is executing");
-  done(null, user.user_id);
+  done(null, {id: user.user_id}); 
 })
 
 passport.deserializeUser(function(id, done){
   console.log("deserialize user is executing");
-  pool.query('SELECT * FROM users WHERE user_id = $1', [id], (err, results) => {
-      if(err) {
-        return done(err)
-      }
-      return done(null, results.rows[0])
-    });
+  return done(null,id);
 });
-app.use(passport.session());
+
+
 
 app.use('/', indexRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout',logoutRouter);
+app.use('/change', changeRouter);
+app.use('/events', eventsRouter);
 app.use((err,req,res,next)=>{
   res.status(400).json({message:err});
 })

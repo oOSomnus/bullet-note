@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import Event from "./Event";
 function List(props){
     const [events, setEvents] = useState([]);
     useEffect(()=>{
-        axios.get(`http://localhost:4000/events?type=${props.type}`)
+        axios.get(`http://localhost:4000/events/${props.type}`,{withCredentials:true})
         .then((response)=>{
             setEvents(response.data);
         })
@@ -16,6 +16,11 @@ function List(props){
 
     return(
         <Container>
+            <Row>
+                <Col>
+                <Button variant="outline-primary">Add Event</Button>
+                </Col>
+            </Row>
             {events.map((events) => (
             <Event id={events.id} event={events.content} type={props.type}></Event>
             ))}

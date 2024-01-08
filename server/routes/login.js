@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post('/', passport.authenticate('local'),(req, res, next)=>{
     res.send(req.user);
-    next();
 })
 
   router.get('/check', (req,res,next)=>{
