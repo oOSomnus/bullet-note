@@ -13,6 +13,7 @@ const indexRouter = require('./routes/index');
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
+const changeRouter = require('./routes/change');
 const expressSession = require('express-session');
 const pgSession = require('connect-pg-simple')(expressSession);
 

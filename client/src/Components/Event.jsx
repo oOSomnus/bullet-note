@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import axios from "axios";
 
-function DailyEvent(props) {
+function Event(props) {
   const [areButtonsVisible, setButtonsVisibility] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const [modifiedEvent, setModifiedEvent] = useState(props.event);
@@ -14,11 +14,12 @@ function DailyEvent(props) {
   const handleSave = () => {
     // Make a request to the server to update the event with modified data
     axios
-      .put(`http://localhost:4000/${props.type}/${props.id}`, { event: modifiedEvent })
+      .put(`http://localhost:4000/change/${props.type}/${props.id}`, { event: modifiedEvent })
       .then((response) => {
         // Handle success, e.g., update state or notify the user
         console.log("Event modified successfully");
         setEditing(false);
+        window.location.reload();
       })
       .catch((error) => {
         // Handle error, e.g., show an error message
@@ -34,10 +35,11 @@ function DailyEvent(props) {
   const handleDelete = () => {
     // Make a request to the server to delete the event with props.id
     axios
-      .delete(`http://localhost:4000/${props.type}/${props.id}`)
+      .delete(`http://localhost:4000/change/${props.type}/${props.id}`)
       .then((response) => {
         // Handle success, e.g., update state or notify the user
         console.log("Event deleted successfully");
+        window.location.reload();
       })
       .catch((error) => {
         // Handle error, e.g., show an error message
@@ -97,4 +99,4 @@ function DailyEvent(props) {
   );
 }
 
-export default DailyEvent;
+export default Event;
