@@ -3,9 +3,9 @@ const pool = require('../db');
 var router = express.Router();
 
 /* GET home page. */
-router.put('/:type:id', async function(req, res, next) {
+router.put('/:type/:id', async function(req, res, next) {
   const {type, id} = req.params;
-  const {event} = req.body.event;
+  const event = req.body.event;
   try{
     const result = await pool.query(
         `UPDATE ${type} SET content = $1 WHERE note_id = $2`,
@@ -22,7 +22,7 @@ router.put('/:type:id', async function(req, res, next) {
   }
 );
 
-router.delete('/:type:id', async function(req, res, next) {
+router.delete('/:type/:id', async function(req, res, next) {
     const {type, id} = req.params;
     try{
       const result = await pool.query(

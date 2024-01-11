@@ -12,6 +12,7 @@ function Event(props) {
   };
 
   const handleSave = () => {
+    window.location.reload();
     // Make a request to the server to update the event with modified data
     axios
       .put(`http://localhost:4000/change/${props.type}/${props.id}`, { event: modifiedEvent })
@@ -33,13 +34,14 @@ function Event(props) {
   };
 
   const handleDelete = () => {
+    window.location.reload();
     // Make a request to the server to delete the event with props.id
     axios
       .delete(`http://localhost:4000/change/${props.type}/${props.id}`)
       .then((response) => {
         // Handle success, e.g., update state or notify the user
         console.log("Event deleted successfully");
-        window.location.reload();
+        console.log(response);
       })
       .catch((error) => {
         // Handle error, e.g., show an error message
@@ -48,25 +50,11 @@ function Event(props) {
   };
 
   return (
-    <Row>
+    <Row className="py-3">
         <Col
           onMouseEnter={() => setButtonsVisibility(true)}
           onMouseLeave={() => setButtonsVisibility(false)}
         >
-          {areButtonsVisible && !isEditing && (
-            <>
-              <Button
-                variant="outline-primary"
-                onClick={handleModify}
-                className="mr-2"
-              >
-                Modify
-              </Button>{" "}
-              <Button variant="outline-danger" onClick={handleDelete}>
-                Delete
-              </Button>{" "}
-            </>
-          )}
           {isEditing ? (
             <Form inline>
               <Form.Control
@@ -92,6 +80,21 @@ function Event(props) {
           ) : (
             <span>{props.event}</span>
           )}
+          {areButtonsVisible && !isEditing && (
+            <>
+              <Button
+                variant="outline-primary"
+                onClick={handleModify}
+                className="mr-2"
+              >
+                Modify
+              </Button>{" "}
+              <Button variant="outline-danger" onClick={handleDelete}>
+                Delete
+              </Button>{" "}
+            </>
+          )}
+          
         </Col>
   </Row>
   );
